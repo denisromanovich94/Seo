@@ -7,55 +7,17 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             header.classList.remove("scrolled");
         }
+        
     });
 
-    const menuToggle = document.querySelector(".menu-toggle");
-    const menuIcon = document.querySelector(".menu-icon");
-    const closeIcon = document.querySelector(".close-icon");
-    const nav = document.querySelector(".nav");
-    const header1 = document.querySelector("header");
-    const navLinks = document.querySelector(".nav-links");
-    const navSocials = document.querySelector(".nav-socials");
 
-    // Флаг для отслеживания, был ли добавлен класс 'scrolled' при открытии меню
-    let isScrolledAdded = false;
 
-    menuToggle.addEventListener("click", () => {
-        nav.classList.toggle("menu-open");
-        menuIcon.classList.toggle("hidden");
-        closeIcon.classList.toggle("hidden");
 
-        // Если меню открыто
-        if (nav.classList.contains("menu-open")) {
-            // Добавляем класс 'scrolled' на header, если его нет
-            if (!header1.classList.contains("scrolled")) {
-                header1.classList.add("scrolled");
-                isScrolledAdded = true; // Устанавливаем флаг, что класс был добавлен
-            }
 
-            // Делаем .nav-links и .nav-socials флекс-контейнерами
-            navLinks.style.display = "flex";
-            navSocials.style.display = "flex";
 
-            // Блокируем прокрутку body
-            document.body.style.overflow = "hidden";
-        } else {
-            // Если меню закрыто
-            // Убираем класс 'scrolled', только если он был добавлен при открытии меню
-            if (isScrolledAdded) {
-                header1.classList.remove("scrolled");
-                isScrolledAdded = false; // Сбрасываем флаг
-            }
 
-            // Возвращаем .nav-links и .nav-socials в исходное состояние
-            navLinks.style.display = "";
-            navSocials.style.display = "";
 
-            // Возвращаем прокрутку body
-            document.body.style.overflow = "";
-        }
-    });
-
+    
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         anchor.addEventListener("click", function (e) {
@@ -141,6 +103,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    const swiper1 = new Swiper(".reviews-slider__wrapper", {
+        slidesPerView: 1.2,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 2000,
+            disableOnInteraction: false,
+        },
+        breakpoints: {
+            768: {
+                slidesPerView: 2.5,
+            },
+            1024: {
+                slidesPerView: 3,
+            },
+            1440: {
+                slidesPerView: 4,
+            }
+        },
+        speed: 800,
+        grabCursor: true,
+    });
+});
+
+
+
+
+
+
+
+
 
 
 
@@ -171,4 +165,152 @@ document.getElementById('submitButton').addEventListener('click', function() {
 document.getElementById('phoneInput').addEventListener('input', function(event) {
     let x = event.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
     event.target.value = '+7 (' + (x[2] ? x[2] : '') + (x[3] ? ')-' + x[3] : '') + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Элементы для бургер-меню
+    const menuToggle = document.querySelector(".menu-toggle");
+    const menuIcon = document.querySelector(".menu-icon");
+    const closeIcon = document.querySelector(".close-icon");
+    const nav = document.querySelector(".nav");
+    const header1 = document.querySelector("header");
+    const navLinks = document.querySelector(".nav-links");
+    const navSocials = document.querySelector(".nav-socials");
+
+    // Флаг для отслеживания, был ли добавлен класс 'scrolled' при открытии меню
+    let isScrolledAdded = false;
+
+    // Управление бургер-меню
+    menuToggle.addEventListener("click", () => {
+        nav.classList.toggle("menu-open");
+        menuIcon.classList.toggle("hidden");
+        closeIcon.classList.toggle("hidden");
+
+        if (nav.classList.contains("menu-open")) {
+            if (!header1.classList.contains("scrolled")) {
+                header1.classList.add("scrolled");
+                isScrolledAdded = true;
+            }
+            navLinks.style.display = "flex";
+            navSocials.style.display = "flex";
+            document.body.style.overflow = "hidden"; // Блокируем прокрутку
+        } else {
+            if (isScrolledAdded) {
+                header1.classList.remove("scrolled");
+                isScrolledAdded = false;
+            }
+            navLinks.style.display = "";
+            navSocials.style.display = "";
+            document.body.style.overflow = ""; // Разблокируем прокрутку
+        }
+    });
+
+    // Элементы для подменю
+    const servicesItem = document.querySelector('a[href="#services"]');
+    const casesItem = document.querySelector('a[href="#cases"]');
+    const servicesSubmenu = document.getElementById('services-submenu');
+    const casesSubmenu = document.getElementById('cases-submenu');
+    const header = document.querySelector('.header');
+
+    // Функция для закрытия всех подменю
+    function closeAllSubmenus() {
+        servicesSubmenu.style.display = 'none';
+        casesSubmenu.style.display = 'none';
+        document.querySelectorAll('.subsubmenu').forEach(subsubmenu => {
+            subsubmenu.style.display = 'none';
+        });
+        header.classList.remove('scrolled'); // Убираем класс scrolled при закрытии всех меню
+    }
+
+    // Функция для проверки, открыто ли второе меню
+    function isSecondMenuOpen() {
+        return servicesSubmenu.style.display === 'flex' || casesSubmenu.style.display === 'flex';
+    }
+
+    // Управление вторым уровнем меню
+    servicesItem.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (servicesSubmenu.style.display === 'flex') {
+            closeAllSubmenus();
+        } else {
+            closeAllSubmenus();
+            servicesSubmenu.style.display = 'flex';
+            header.classList.add('scrolled');
+        }
+    });
+
+    casesItem.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (casesSubmenu.style.display === 'flex') {
+            closeAllSubmenus();
+        } else {
+            closeAllSubmenus();
+            casesSubmenu.style.display = 'flex';
+            header.classList.add('scrolled');
+        }
+    });
+
+    // Управление третьим уровнем меню
+    const submenuItems = document.querySelectorAll('.submenu-item');
+    submenuItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const subsubmenuId = item.getAttribute('href').substring(1) + '-submenu';
+            const subsubmenu = document.getElementById(subsubmenuId);
+
+            document.querySelectorAll('.subsubmenu').forEach(subsubmenu => {
+                subsubmenu.style.display = 'none';
+            });
+
+            if (subsubmenu) {
+                subsubmenu.style.display = 'flex';
+            } else {
+                console.error('Submenu not found for ID:', subsubmenuId);
+            }
+        });
+    });
+
+    // Закрытие меню при клике вне
+    document.addEventListener('click', (event) => {
+        if (
+            !event.target.closest('.nav-item') && 
+            !event.target.closest('.submenu') && 
+            !event.target.closest('.subsubmenu') &&
+            !event.target.closest('.menu-toggle') && 
+            !event.target.closest('.nav')  // Добавляем проверку на закрытие только если клик не был внутри меню
+        ) {
+            closeAllSubmenus();
+            nav.classList.remove("menu-open"); // Закрытие бургер-меню
+            menuIcon.classList.remove("hidden"); // Показ иконки бургера
+            closeIcon.classList.add("hidden");  // Скрытие крестика
+            document.body.style.overflow = ""; // Разблокируем прокрутку
+        }
+    });
+
+    // Наблюдаем за изменениями в DOM для управления классом scrolled
+    const observer = new MutationObserver(() => {
+        if (isSecondMenuOpen()) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+
+    // Наблюдаем за изменениями в подменю
+    observer.observe(servicesSubmenu, { attributes: true, attributeFilter: ['style'] });
+    observer.observe(casesSubmenu, { attributes: true, attributeFilter: ['style'] });
 });
