@@ -314,3 +314,60 @@ document.addEventListener('DOMContentLoaded', function () {
     observer.observe(servicesSubmenu, { attributes: true, attributeFilter: ['style'] });
     observer.observe(casesSubmenu, { attributes: true, attributeFilter: ['style'] });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContainers = document.querySelectorAll('.tab-container');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    let currentIndex = 0; // Текущий активный таб
+  
+    // Функция для переключения табов
+    function switchTab(index) {
+      // Убираем активный класс у всех кнопок, контейнеров и панелей
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      tabContainers.forEach(container => container.classList.remove('active'));
+      tabPanes.forEach(pane => pane.classList.remove('active'));
+  
+      // Добавляем активный класс к выбранной кнопке, контейнеру и панели
+      tabButtons[index].classList.add('active');
+      tabContainers[index].classList.add('active');
+      tabPanes[index].classList.add('active');
+  
+      // Обновляем текущий индекс
+      currentIndex = index;
+    }
+  
+    // Обработчик клика для кнопок
+    tabButtons.forEach((button, index) => {
+      button.addEventListener('click', function() {
+        switchTab(index);
+      });
+    });
+  
+    // Автоматическое переключение каждые 5 секунд
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % tabButtons.length; // Переход к следующему табу
+      switchTab(currentIndex);
+    }, 5000); // 5000 мс = 5 секунд
+  });
